@@ -1,1 +1,780 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Эндорфит | Jumping & Kangoo Jumps Тверь</title>
+  <meta name="description" content="Эндорфит — единственная оригинальная студия Jumping® и Kangoo Jumps® в Твери. Яркие тренировки на батутах, стретчинг, силовые и танцевальные классы. Профессиональные инструкторы, сертифицированное оборудование.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    :root {
+      --primary: #190936;
+      --accent: #FF00CA;
+      --accent-glow: rgba(255, 0, 202, 0.45);
+      --accent-soft: rgba(255, 0, 202, 0.12);
+      --bg-dark: #0d0221;
+      --bg-card: rgba(25, 9, 54, 0.7);
+      --text-light: #ffffff;
+      --text-dim: rgba(255, 255, 255, 0.7);
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Nunito', sans-serif;
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-pill: 60px;
+      --shadow-glow: 0 8px 32px rgba(255, 0, 202, 0.3);
+      --border-glow: 1px solid rgba(255, 0, 202, 0.5);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      font-family: var(--font-body);
+      color: var(--text-light);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Fixed header */
+    .fixed-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(13, 2, 33, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 0, 202, 0.25);
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 74px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: white;
+    }
+    .logo-icon {
+      font-size: 32px;
+      filter: drop-shadow(0 0 10px var(--accent));
+    }
+    .logo-text {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff, #ffb3f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 8px var(--accent);
+    }
+    .btn-nav-cta {
+      background: var(--accent) !important;
+      color: white !important;
+      padding: 10px 24px;
+      border-radius: var(--radius-pill);
+      font-weight: 800 !important;
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transition: 0.2s;
+    }
+    .btn-nav-cta:hover {
+      background: #e000b0 !important;
+      transform: scale(1.03);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .hamburger span {
+      width: 26px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 74px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 2, 33, 0.98);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: 0.3s;
+      pointer-events: none;
+    }
+    .mobile-nav.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .mobile-nav a {
+      color: white;
+      font-weight: 700;
+      font-size: 20px;
+      text-decoration: none;
+      padding: 12px;
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,0,202,0.2);
+    }
+    .mobile-nav .btn-mobile-cta {
+      background: var(--accent);
+      border-radius: var(--radius-pill);
+      margin-top: 16px;
+      padding: 14px 40px;
+      width: auto;
+      color: white !important;
+      font-size: 18px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .section {
+      padding: 90px 24px;
+      position: relative;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .eyebrow-line {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+    }
+    .eyebrow-text {
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.4rem, 7vw, 4rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 16px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .section-title em {
+      color: var(--accent);
+      font-style: italic;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--text-dim);
+      max-width: 640px;
+      margin: 0 auto 56px;
+      font-size: 1.1rem;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      padding: 16px 38px;
+      border-radius: var(--radius-pill);
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: var(--shadow-glow);
+      transition: 0.3s;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary:hover {
+      background: #e000b0;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px var(--accent-glow);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--accent);
+      background: transparent;
+      padding: 16px 38px;
+      border-radius: var(--radius-pill);
+      color: white;
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    .btn-outline:hover {
+      background: var(--accent);
+      box-shadow: var(--shadow-glow);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 20px 80px;
+      background: radial-gradient(circle at 30% 40%, #2a0a4a, #0d0221);
+      position: relative;
+    }
+    .hero-blob-1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(255,0,202,0.2);
+      top: -100px;
+      right: -100px;
+    }
+    .hero-blob-2 {
+      width: 350px;
+      height: 350px;
+      background: rgba(255,0,202,0.15);
+      bottom: 0;
+      left: -80px;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,0,202,0.15);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-pill);
+      padding: 6px 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #ffb3f0;
+    }
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(3.2rem, 10vw, 6rem);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .hero h1 em {
+      color: var(--accent);
+      font-style: italic;
+    }
+    .hero-sub {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .hero-tag {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,0,202,0.4);
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Marquee */
+    .marquee-strip {
+      background: var(--accent);
+      padding: 16px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 40px;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Directions */
+    .directions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .dir-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,0,202,0.25);
+      border-radius: var(--radius-xl);
+      padding: 32px 24px;
+      transition: 0.3s;
+    }
+    .dir-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 40px rgba(255,0,202,0.2);
+    }
+    .dir-card.featured {
+      background: var(--accent);
+      border: none;
+    }
+    .dir-icon {
+      font-size: 36px;
+      margin-bottom: 18px;
+    }
+    .dir-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .dir-card p {
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .dir-tag {
+      background: rgba(255,255,255,0.1);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    /* Prices */
+    .prices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .price-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,0,202,0.3);
+      border-radius: var(--radius-xl);
+      padding: 36px 24px;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .price-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 35px rgba(255,0,202,0.25);
+    }
+    .price-card.popular {
+      background: var(--primary);
+      border: 2px solid var(--accent);
+      transform: scale(1.03);
+    }
+    .popular-badge {
+      background: var(--accent);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 12px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .price-amount {
+      font-family: var(--font-heading);
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 12px 0;
+    }
+    .price-btn {
+      background: var(--accent);
+      color: white;
+      padding: 12px;
+      border-radius: 30px;
+      font-weight: 800;
+      text-decoration: none;
+      display: block;
+      margin-top: 20px;
+      transition: 0.2s;
+    }
+
+    /* Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .gallery-item {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.4s;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* FAQ */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,0,202,0.2);
+      border-radius: 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .faq-question {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: 0.3s;
+      color: var(--text-dim);
+      padding: 0 24px;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding-bottom: 20px;
+    }
+
+    /* Contacts */
+    .contacts-flex {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .contact-card {
+      background: var(--bg-card);
+      padding: 28px;
+      border-radius: 24px;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .footer {
+      background: #0a011a;
+      padding: 40px 24px;
+      text-align: center;
+      border-top: 1px solid var(--accent);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .mobile-nav { display: flex; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="fixed-header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">🔥</span>
+        <span class="logo-text">ЭНДОРФИТ</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#directions">Направления</a>
+        <a href="#prices">Цены</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#faq">Вопросы</a>
+        <a href="#contacts">Контакты</a>
+        <a href="#trial" class="btn-nav-cta">Записаться</a>
+      </nav>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#directions">Направления</a>
+    <a href="#prices">Цены</a>
+    <a href="#gallery">Галерея</a>
+    <a href="#contacts">Контакты</a>
+    <a href="#trial" class="btn-mobile-cta">Пробное занятие</a>
+  </nav>
+
+  <section class="hero">
+    <div class="blob hero-blob-1"></div>
+    <div class="blob hero-blob-2"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="hero-badge-dot"></span> Единственная студия в Твери</div>
+      <h1>ФИТНЕС <em>ЭНДОРФИТ</em></h1>
+      <p class="hero-sub">Jumping® & Kangoo Jumps® — энергия, драйв и настроение на высоте прыжка!</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Оригинальные батуты</span>
+        <span class="hero-tag">Лицензированные тренеры</span>
+        <span class="hero-tag">Стретчинг</span>
+        <span class="hero-tag">Танцы</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#trial" class="btn-primary">🔥 Пробная тренировка 400₽</a>
+        <a href="#directions" class="btn-outline">Все направления</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span class="marquee-item">🤸 JUMPING®</span>
+      <span class="marquee-item">👟 KANGOO JUMPS®</span>
+      <span class="marquee-item">🧘 СТРЕТЧИНГ</span>
+      <span class="marquee-item">💪 СИЛОВЫЕ</span>
+      <span class="marquee-item">🕺 ТАНЦЫ</span>
+      <span class="marquee-item">🤸 JUMPING®</span>
+      <span class="marquee-item">👟 KANGOO JUMPS®</span>
+    </div>
+  </div>
+
+  <section id="directions" class="section">
+    <div class="container">
+      <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Тренировки</span><div class="eyebrow-line"></div></div>
+      <h2 class="section-title">Наши <em>направления</em></h2>
+      <div class="directions-grid">
+        <div class="dir-card featured">
+          <div class="dir-icon">🚀</div>
+          <h3>Jumping®</h3>
+          <p>Оригинальные батуты. Максимальная безопасность и эффективность кардио.</p>
+          <span class="dir-tag">Кардио</span>
+        </div>
+        <div class="dir-card">
+          <div class="dir-icon">👟</div>
+          <h3>Kangoo Jumps®</h3>
+          <p>Прыжковые ботинки. Динамика, драйв и эмоции, которых нет нигде.</p>
+          <span class="dir-tag">Эксклюзив</span>
+        </div>
+        <div class="dir-card">
+          <div class="dir-icon">🧘</div>
+          <h3>Стретчинг</h3>
+          <p>Глубокая растяжка для гибкости и расслабления мышц после нагрузки.</p>
+        </div>
+        <div class="dir-card">
+          <div class="dir-icon">💪</div>
+          <h3>Силовые</h3>
+          <p>Функциональный тренинг для тонуса и силы всего тела.</p>
+        </div>
+        <div class="dir-card">
+          <div class="dir-icon">🎵</div>
+          <h3>Танцевальные классы</h3>
+          <p>Зажигательные связки под музыку. Раскрепощение и настроение.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="prices" class="section" style="background: #11052b;">
+    <div class="container">
+      <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Прайс</span><div class="eyebrow-line"></div></div>
+      <h2 class="section-title">Цены и <em>абонементы</em></h2>
+      <div class="prices-grid">
+        <div class="price-card">
+          <h3>Пробная тренировка</h3>
+          <div class="price-amount">400 ₽</div>
+          <p>Знакомство с форматом</p>
+          <a href="#" class="price-btn">Купить</a>
+        </div>
+        <div class="price-card popular">
+          <div class="popular-badge">ХИТ</div>
+          <h3>Абонементы</h3>
+          <div class="price-amount">2 200–5 500 ₽</div>
+          <p>Jumping / Kangoo Jumps</p>
+          <a href="#" class="price-btn">Выбрать</a>
+        </div>
+        <div class="price-card">
+          <h3>Разовое занятие</h3>
+          <div class="price-amount">600 ₽</div>
+          <p>Jumping или Kangoo</p>
+          <a href="#" class="price-btn">Записаться</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section">
+    <div class="container">
+      <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Атмосфера</span><div class="eyebrow-line"></div></div>
+      <h2 class="section-title">Яркие <em>моменты</em></h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="images/jumping1.webp" alt="Jumping тренировка"></div>
+        <div class="gallery-item"><img src="images/kangoo1.webp" alt="Kangoo Jumps"></div>
+        <div class="gallery-item"><img src="images/studio1.webp" alt="Студия Эндорфит"></div>
+        <div class="gallery-item"><img src="images/stretch1.webp" alt="Стретчинг"></div>
+        <div class="gallery-item"><img src="images/dance1.webp" alt="Танцы"></div>
+        <div class="gallery-item"><img src="images/team1.webp" alt="Инструкторы"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section" style="background: #0d0221;">
+    <div class="container">
+      <h2 class="section-title">Частые <em>вопросы</em></h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">Нужна ли подготовка? <span>▼</span></div>
+          <div class="faq-answer"><p>Нет! Тренировки подходят для любого уровня — от новичков до профи.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Что такое Jumping®? <span>▼</span></div>
+          <div class="faq-answer"><p>Это кардио на оригинальных батутах с профессиональным инструктором.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts" class="section">
+    <div class="container">
+      <h2 class="section-title">Наши <em>адреса</em></h2>
+      <div class="contacts-flex">
+        <div class="contact-card">
+          <h3>📍 ТЦ «Бульвар»</h3>
+          <p>Цанова 6, 3 этаж</p>
+        </div>
+        <div class="contact-card">
+          <h3>📍 ТЦ «Альтаир»</h3>
+          <p>1-й проезд Павлова 2, цоколь</p>
+        </div>
+        <div class="contact-card">
+          <h3>📞 Телефон</h3>
+          <p>8 (903) 802-53-14</p>
+          <a href="https://vk.com/kitibu" style="color:var(--accent);">vk.com/kitibu</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 Фитнес Эндорфит | Jumping & Kangoo Jumps Тверь</p>
+    <p style="color:var(--accent); margin-top: 8px;">Почувствуй фитнес, который поднимает настроение!</p>
+  </footer>
+
+  <script>
+    (function() {
+      const hamburger = document.getElementById('hamburger');
+      const mobileNav = document.getElementById('mobileNav');
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileNav.classList.toggle('open');
+      });
+      document.querySelectorAll('.mobile-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('open');
+          mobileNav.classList.remove('open');
+        });
+      });
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('click', () => {
+          item.classList.toggle('open');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
