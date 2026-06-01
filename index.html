@@ -227,26 +227,133 @@
         .dir-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
         .dir-tag { background: rgba(255,0,202,0.1); border: 1px solid var(--neon); color: var(--neon); padding: 5px 15px; border-radius: 30px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
 
-        /* ── PRICES ── */
-        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .price-card {
-            background: linear-gradient(145deg, rgba(25,9,54,0.8), rgba(40,15,80,0.8));
-            border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-xl); padding: 30px 24px;
-            display: flex; flex-direction: column; text-align: center; transition: 0.3s;
-        }
-        .price-card:hover { transform: scale(1.03); border-color: var(--neon); box-shadow: var(--shadow-neon); z-index: 2; }
-        .price-card.vip { background: var(--neon); border-color: var(--neon); }
-        .price-card h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; text-transform: uppercase; margin-bottom: 10px; min-height: 46px; }
-        .price-val { font-family: var(--font-display); font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; font-style: italic; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .price-card.vip .price-val { color: #fff; }
-        .price-card:not(.vip) .price-val { color: var(--neon); }
-        .price-btn {
-            margin-top: auto; padding: 12px; border-radius: var(--radius-pill); font-weight: 800; text-transform: uppercase; text-decoration: none; font-size: 14px; transition: 0.3s;
-        }
-        .price-card:not(.vip) .price-btn { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-        .price-card:not(.vip) .price-btn:hover { background: var(--neon); border-color: var(--neon); box-shadow: var(--shadow-neon); }
-        .price-card.vip .price-btn { background: #fff; color: var(--neon-dark); }
-        .price-card.vip .price-btn:hover { background: var(--bg-dark); color: #fff; }
+       /* ── PRICES ── */
+.price-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.price-card {
+    background: linear-gradient(145deg, rgba(25,9,54,0.8), rgba(40,15,80,0.8));
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-xl);
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.price-card:hover {
+    transform: scale(1.03);
+    border-color: var(--neon);
+    box-shadow: var(--shadow-neon);
+    z-index: 2;
+}
+
+.price-card.vip {
+    background: var(--neon);
+    border-color: var(--neon);
+}
+
+.price-card h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    min-height: 46px;
+}
+
+.price-val {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    font-style: italic;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.price-card.vip .price-val { color: #fff; }
+.price-card:not(.vip) .price-val { color: var(--neon); }
+
+.price-btn {
+    margin-top: auto;
+    padding: 12px;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.price-card:not(.vip) .price-btn {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.price-card:not(.vip) .price-btn:hover {
+    background: var(--neon);
+    border-color: var(--neon);
+    box-shadow: var(--shadow-neon);
+}
+
+.price-card.vip .price-btn {
+    background: #fff;
+    color: var(--neon-dark);
+}
+
+.price-card.vip .price-btn:hover {
+    background: var(--bg-dark);
+    color: #fff;
+}
+
+/* Центрируем последние 2 карточки */
+.price-card:nth-child(4) {
+    grid-column: 2 / 3;
+}
+
+.price-card:nth-child(5) {
+    grid-column: 3 / 4;
+}
+
+/* Адаптив для планшетов */
+@media (max-width: 900px) {
+    .price-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 600px;
+    }
+    
+    .price-card:nth-child(4),
+    .price-card:nth-child(5) {
+        grid-column: span 1;
+    }
+    
+    /* На планшете 5-я карточка центрируется */
+    .price-card:nth-child(5) {
+        grid-column: 1 / -1;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 500px) {
+    .price-grid {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+    }
+    
+    .price-card:nth-child(4),
+    .price-card:nth-child(5) {
+        grid-column: 1 / -1;
+    }
+}
 
         /* ── GALLERY MASONRY ── */
         .gallery-grid { columns: 3; column-gap: 16px; }
